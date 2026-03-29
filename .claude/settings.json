@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go build ./...)",
+      "Bash(go vet ./...)",
+      "Bash(go test ./...)",
+      "Bash(go test -v ./...)",
+      "Bash(go test -run *)",
+      "Bash(go mod tidy)",
+      "Bash(swag init *)",
+      "Bash(gofmt -w *)"
+    ],
+    "deny": [
+      "Bash(go get *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f go.mod ] && go build ./... 2>&1 && go vet ./... 2>&1 || true"
+          }
+        ]
+      }
+    ]
+  }
+}
