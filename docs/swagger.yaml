@@ -1,0 +1,76 @@
+basePath: /
+definitions:
+  facilitators.Facilitator:
+    properties:
+      id:
+        type: integer
+      loginId:
+        type: string
+      name:
+        type: string
+    type: object
+  facilitators.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/facilitators.Facilitator'
+        type: array
+      totalCount:
+        type: integer
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: ファシリテーター一覧 API（react-data-table-api の Go 移植版）
+  title: golang-data-table-api
+  version: 1.0.0
+paths:
+  /api/facilitators:
+    get:
+      parameters:
+      - default: 1
+        description: ページ番号（1以上）
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 20
+        description: 件数（1-100）
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - description: ソートキー
+        enum:
+        - name
+        - loginId
+        in: query
+        name: sort
+        type: string
+      - description: ソート順
+        enum:
+        - asc
+        - desc
+        in: query
+        name: order
+        type: string
+      - description: 検索キーワード
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Request-Id:
+              description: リクエストID
+              type: string
+          schema:
+            $ref: '#/definitions/facilitators.ListResponse'
+      summary: ファシリテーター一覧取得
+      tags:
+      - facilitators
+swagger: "2.0"
